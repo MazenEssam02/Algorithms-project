@@ -73,3 +73,19 @@ void fillGrid(int n, int x, int y)
     fillGrid(n / 2, x + n / 2, y + n / 2);
 }
 
+
+int main()
+{
+    gridSize = 8;
+    memset(grid, 0, sizeof(grid));
+    memset(dp, -1, sizeof(dp));
+    holeX = 0, holeY = 3;
+    grid[holeX][holeY] = -1;
+    fillGrid(gridSize, 0, 0);
+    for (int i = 0; i < gridSize; i++)
+    {
+        for (int j = 0; j < gridSize; j++)
+            cout << grid[i][j] << " \t";
+        cout << "\n";
+    }
+}
