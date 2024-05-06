@@ -29,3 +29,47 @@ int getColor()
         dp[colorIndex] = 3;
     return dp[colorIndex];
 }
+void fillGrid(int n, int x, int y)
+{
+    int r, c, color;
+    if (n == 2)
+    {
+        color = getColor();
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if (grid[x + i][y + j] == 0)
+                {
+                    grid[x + i][y + j] = color;
+                }
+            }
+        }
+        return;
+    }
+
+    // Find hole
+    for (int i = x; i < x + n; i++)
+    {
+        for (int j = y; j < y + n; j++)
+        {
+            if (grid[i][j] != 0)
+                r = i, c = j;
+        }
+    }
+
+    if (r < x + n / 2 && c < y + n / 2)
+        placeColors(x + n / 2, y + (n / 2) - 1, x + n / 2, y + n / 2, x + n / 2 - 1, y + n / 2);
+    else if (r >= x + n / 2 && c < y + n / 2)
+        placeColors(x + (n / 2) - 1, y + (n / 2), x + (n / 2), y + n / 2, x + (n / 2) - 1, y + (n / 2) - 1);
+    else if (r < x + n / 2 && c >= y + n / 2)
+        placeColors(x + n / 2, y + (n / 2) - 1, x + n / 2, y + n / 2, x + n / 2 - 1, y + n / 2 - 1);
+    else if (r >= x + n / 2 && c >= y + n / 2)
+        placeColors(x + (n / 2) - 1, y + (n / 2), x + (n / 2), y + (n / 2) - 1, x + (n / 2) - 1, y + (n / 2) - 1);
+
+    fillGrid(n / 2, x, y);
+    fillGrid(n / 2, x, y + n / 2);
+    fillGrid(n / 2, x + n / 2, y);
+    fillGrid(n / 2, x + n / 2, y + n / 2);
+}
+
