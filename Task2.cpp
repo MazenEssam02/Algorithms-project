@@ -81,3 +81,75 @@ bool nextMove(int a[], int *x, int *y)
 
 	return true;
 }
+/* Function: displays the chessboard with all the
+ * legal knight's moves */
+void print(int a[])
+{
+	for (int i = 0; i < N; ++i)
+	{
+		for (int j = 0; j < N; ++j)
+			printf("%d\t",a[j*N+i]);
+		printf("\n");
+	}
+}
+
+/* Function: checks the condition that
+ * the knight ends on a square that is one
+ * knight's move from the beginning square,
+ * meaning then the tour is closed */
+bool isTourClosed(int x, int y, int xx, int yy)
+{
+	for (int i = 0; i < N; ++i)
+		if (((x+Xmove[i]) == xx)&&((y + Ymove[i]) == yy))
+			return true;
+
+	return false;
+}
+
+/* Function: Generates the legal moves using warnsdorff's heuristics.
+ * Returns false if not possible */
+bool findClosedTour()
+{
+	// Filling up the chessboard matrix with -1's
+	int a[N*N];
+	for (int i = 0; i< N*N; ++i)
+		a[i] = -1;
+
+	// Random initial position
+	int sx = rand()%N;
+	int sy = rand()%N;
+
+	// Current points are same as initial points
+	int x = sx, y = sy;
+	a[y*N+x] = 1; // Mark first move.
+
+	// Keep picking next points using
+	// Warnsdorff's heuristic
+	for (int i = 0; i < N*N-1; i++)
+		if (nextMove(a, &x, &y) == 0)
+			return false; //if we got stuck with these starting points return false
+
+	// Check if tour is closed (Can end
+	// at starting point)
+	if (!isTourClosed(x, y, sx, sy))
+		return false;
+
+	print(a);
+	return true;
+}
+
+int main()
+{
+	// To make sure that different random
+	// initial positions are picked.
+	srand(time(NULL));
+
+	// While we don't get a solution call the findClosedTour function
+	while (!findClosedTour())
+	{
+	;
+	}
+
+	return 0;
+}
+
